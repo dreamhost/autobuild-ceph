@@ -574,7 +574,7 @@ def gitbuilder_ceph():
 @roles('gitbuilder_ceph_website')
 def gitbuilder_ceph_website():
     _deb_builder(
-        flavor='ceph',
+        flavor='ceph-deb-native',
         git_repo='https://github.com/dreamhost/ceph.git',
         branches_local_name='branches-local-website',
         )
