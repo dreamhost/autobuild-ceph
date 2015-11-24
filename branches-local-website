@@ -40,7 +40,8 @@ def separate_tags_and_branches(refs):
 PRIORITIZE = [
     ]
 PRIORITIZE_PREFIX = [
-    'wip-static-website',
+    'wip-static-website-robbat2',
+    'wip-static-website-hammer',
 ]
 
 IGNORE = [
@@ -50,8 +51,8 @@ IGNORE = [
     'firefly',
     'firefly-backports',
     'giant',
-    #'hammer'
-    #'hammer-backports'
+    'hammer'
+    'hammer-backports'
     'last',
     'master',
     'next',
