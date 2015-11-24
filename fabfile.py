@@ -571,10 +571,19 @@ def gitbuilder_ceph():
     _gitbuilder_ceph('ceph')
     _sync_to_gitbuilder('ceph', 'tarball', 'basic')
 
-def _gitbuilder_ceph(flavor):
+@roles('gitbuilder_ceph_website')
+def gitbuilder_ceph_website():
+    _deb_builder(
+        flavor='ceph',
+        git_repo='https://github.com/dreamhost/ceph.git',
+        branches_local_name='branches-local-website',
+        )
+    _sync_to_gitbuilder('ceph', 'tarball', 'basic')
+
+def _gitbuilder_ceph(flavor, git_repo='https://github.com/ceph/ceph.git'):
     _gitbuilder(
         flavor=flavor,
-        git_repo='https://github.com/ceph/ceph.git',
+        git_repo=git_repo,
         extra_remotes=dict(
             ci='https://github.com/ceph/ceph-ci.git',
         ),
@@ -623,10 +632,10 @@ def _gitbuilder_ceph(flavor):
         )
     sudo('start autobuild-ceph || /etc/init.d/autobuild-ceph start ; systemctl enable autobuild-ceph || true ; systemctl start autobuild-ceph || true')
 
-def _deb_builder(git_url, flavor, extra_remotes={}):
+def _deb_builder(git_repo, flavor, extra_remotes={}, branches_local_name='branches-local'):
     _gitbuilder(
         flavor=flavor,
-        git_repo=git_url,
+        git_repo=git_repo,
         extra_remotes=extra_remotes,
         extra_packages=[
             'automake',
@@ -679,6 +688,7 @@ def _deb_builder(git_url, flavor, extra_remotes={}):
             'python-nose',
             'libsnappy-dev',
             ],
+        branches_local_name=branches_local_name,
         )
     _deb_install_extras()
 
