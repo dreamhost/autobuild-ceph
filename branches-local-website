@@ -52,9 +52,9 @@ IGNORE = [
     'firefly-backports',
     'giant',
     'hammer'
-    'hammer-backports'
+    #'hammer-backports'
     'last',
-    'master',
+    #'master',
     'next',
     ]
 
