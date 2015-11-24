@@ -27,20 +27,11 @@ echo --START-IGNORE-WARNINGS
 [ ! -x autogen.sh ] || ./autogen.sh || exit 1
 autoconf || true
 echo --STOP-IGNORE-WARNINGS
-[ -z "$CEPH_EXTRA_CONFIGURE_ARGS" ] && CEPH_EXTRA_CONFIGURE_ARGS=--with-tcmalloc
-[ ! -x configure ] || ./configure --with-debug --with-radosgw --with-fuse --with-libatomic-ops --with-gtk2 --with-profiler --enable-cephfs-java $CEPH_EXTRA_CONFIGURE_ARGS || exit 2
-
-if [ ! -e Makefile ]; then
-    echo "$0: no Makefile, aborting." 1>&2
-    exit 3
-fi
-
-# Actually build the project
 
 # clear out any $@ potentially passed in
 set --
 
-# enable ccache if it is installed
+# enable ccache if it is installed, must be BEFORE configure, so that configure correctly sets the compiler
 export CCACHE_DIR="$PWD/../../ccache"
 if command -v ccache >/dev/null; then
   if [ ! -e "$CCACHE_DIR" ]; then
@@ -51,6 +42,16 @@ if command -v ccache >/dev/null; then
 else
   echo "$0: no ccache found, compiles will be slower." 1>&2
 fi
+
+[ -z "$CEPH_EXTRA_CONFIGURE_ARGS" ] && CEPH_EXTRA_CONFIGURE_ARGS=--with-tcmalloc
+[ ! -x configure ] || CC="$CC" CXX="$CXX" ./configure --with-debug --with-radosgw --with-fuse --with-libatomic-ops --with-gtk2 --with-profiler --enable-cephfs-java $CEPH_EXTRA_CONFIGURE_ARGS || exit 2
+
+if [ ! -e Makefile ]; then
+    echo "$0: no Makefile, aborting." 1>&2
+    exit 3
+fi
+
+# Actually build the project
 
 # build the debs
 mkdir -p release

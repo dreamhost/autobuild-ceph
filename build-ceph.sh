@@ -24,15 +24,6 @@ echo --START-IGNORE-WARNINGS
 [ ! -x autogen.sh ] || ./autogen.sh || exit 1
 autoconf || true
 echo --STOP-IGNORE-WARNINGS
-[ -z "$CEPH_EXTRA_CONFIGURE_ARGS" ] && CEPH_EXTRA_CONFIGURE_ARGS=--with-tcmalloc
-[ ! -x configure ] || CFLAGS="-fno-omit-frame-pointer -g -O2" CXXFLAGS="-fno-omit-frame-pointer -g" ./configure --with-debug --with-radosgw --with-libatomic-ops --without-lttng --disable-static $CEPH_EXTRA_CONFIGURE_ARGS || exit 2
-
-if [ ! -e Makefile ]; then
-    echo "$0: no Makefile, aborting." 1>&2
-    exit 3
-fi
-
-# Actually build the project
 
 # clear out any $@ potentially passed in
 set --
@@ -48,6 +39,16 @@ if command -v ccache >/dev/null; then
 else
   echo "$0: no ccache found, compiles will be slower." 1>&2
 fi
+
+[ -z "$CEPH_EXTRA_CONFIGURE_ARGS" ] && CEPH_EXTRA_CONFIGURE_ARGS=--with-tcmalloc
+[ ! -x configure ] || CFLAGS="-fno-omit-frame-pointer -g -O2" CXXFLAGS="-fno-omit-frame-pointer -g" CC="$CC" CXX="$CXX" ./configure --with-debug --with-radosgw --with-libatomic-ops --without-lttng --disable-static $CEPH_EXTRA_CONFIGURE_ARGS || exit 2
+
+if [ ! -e Makefile ]; then
+    echo "$0: no Makefile, aborting." 1>&2
+    exit 3
+fi
+
+# Actually build the project
 
 function can_parallel_make_check() {
     local commit=$(git rev-parse tags/v0.88^{})
