@@ -577,6 +577,7 @@ def gitbuilder_ceph_website():
         flavor='ceph-deb-native',
         git_repo='https://github.com/dreamhost/ceph.git',
         branches_local_name='branches-local-website',
+        branch_to_bundle='wip-website',
         )
     _sync_to_gitbuilder('ceph', 'tarball', 'basic')
 
@@ -632,7 +633,7 @@ def _gitbuilder_ceph(flavor, git_repo='https://github.com/ceph/ceph.git'):
         )
     sudo('start autobuild-ceph || /etc/init.d/autobuild-ceph start ; systemctl enable autobuild-ceph || true ; systemctl start autobuild-ceph || true')
 
-def _deb_builder(git_repo, flavor, extra_remotes={}, branches_local_name='branches-local'):
+def _deb_builder(git_repo, flavor, extra_remotes={}, branches_local_name='branches-local', branch_to_bundle='master'):
     _gitbuilder(
         flavor=flavor,
         git_repo=git_repo,
@@ -689,6 +690,7 @@ def _deb_builder(git_repo, flavor, extra_remotes={}, branches_local_name='branch
             'libsnappy-dev',
             ],
         branches_local_name=branches_local_name,
+        branch_to_bundle=branch_to_bundle,
         )
     _deb_install_extras()
 
