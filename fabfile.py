@@ -591,6 +591,8 @@ def _gitbuilder_ceph_website(flavour):
         git_repo='https://github.com/dreamhost/ceph.git',
         branches_local_name='branches-local-website',
         branch_to_bundle='wip-website',
+        ceph_build_uri='https://github.com/dreamhost/ceph-build.git',
+        ceph_build_branch='wip-website',
         )
     _sync_to_gitbuilder('ceph', 'tarball', 'basic')
 
