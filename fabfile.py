@@ -577,10 +577,16 @@ def gitbuilder_ceph():
     _gitbuilder_ceph('ceph')
     _sync_to_gitbuilder('ceph', 'tarball', 'basic')
 
-@roles('gitbuilder_ceph_website')
-def gitbuilder_ceph_website():
+@roles('gitbuilder_ceph_website_deb_native')
+def gitbuilder_ceph_website_deb_native():
+    _gitbuilder_ceph_website(flavour='ceph-deb-native')
+@roles('gitbuilder_ceph_website_deb')
+def gitbuilder_ceph_website_deb():
+    _gitbuilder_ceph_website(flavour='ceph-deb')
+
+def _gitbuilder_ceph_website(flavour):
     _deb_builder(
-        flavor='ceph-deb-native',
+        flavor=flavour,
         git_repo='https://github.com/dreamhost/ceph.git',
         branches_local_name='branches-local-website',
         branch_to_bundle='wip-website',
