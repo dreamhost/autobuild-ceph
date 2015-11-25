@@ -201,7 +201,7 @@ def _rh_gitbuilder(flavor, git_repo, extra_remotes={}, extra_packages=[], ignore
             with cd('gitbuilder.git.tmp'):
                 sudo('git checkout %s' % gitbuilder_commit)
                 sudo('ln -s ../build.sh ./')
-                if branches_local_name != 'branches-local':
+                if branches_local_name != 'branches-local' and exists('branches-local'):
                     sudo('mv ./branches-local ./branches-local-orig')
                 sudo('ln -s ../{branches_local_name} ./branches-local'.format(branches_local_name=branches_local_name))
                 sudo('chown -R autobuild-ceph:autobuild-ceph out')
@@ -325,7 +325,7 @@ def _gitbuilder(flavor, git_repo, extra_remotes={}, extra_packages=[], ignore=[]
             with cd('gitbuilder.git.tmp'):
                 sudo('git checkout %s' % gitbuilder_commit)
                 sudo('ln -s ../build.sh ./')
-                if branches_local_name != 'branches-local':
+                if branches_local_name != 'branches-local' and exists('branches-local'):
                     sudo('mv ./branches-local ./branches-local-orig')
                 sudo('ln -s ../{branches_local_name} ./branches-local'.format(branches_local_name=branches_local_name))
                 sudo('chown -R autobuild-ceph:autobuild-ceph out')
