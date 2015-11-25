@@ -38,10 +38,13 @@ if command -v ccache >/dev/null; then
     echo "$0: have ccache but cache directory does not exist: $CCACHE_DIR" 1>&2
   else
     set -- CC='ccache gcc' CXX='ccache g++'
+    CC='ccache gcc' CXX='ccache g++'
   fi
 else
+  CC='gcc' CXX='g++'
   echo "$0: no ccache found, compiles will be slower." 1>&2
 fi
+export CC CXX
 
 [ -z "$CEPH_EXTRA_CONFIGURE_ARGS" ] && CEPH_EXTRA_CONFIGURE_ARGS=--with-tcmalloc
 [ ! -x configure ] || CC="$CC" CXX="$CXX" ./configure --with-debug --with-radosgw --with-fuse --with-libatomic-ops --with-gtk2 --with-profiler --enable-cephfs-java $CEPH_EXTRA_CONFIGURE_ARGS || exit 2
