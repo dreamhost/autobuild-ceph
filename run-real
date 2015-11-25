@@ -6,7 +6,7 @@ export CPATH="$CPATH:/usr/lib/jvm/default-java/include:/usr/lib/jvm/default-java
 export GNUPGHOME="/srv/gnupg"
 # try to pick up the gnupg key automatically
 export KEYID=$(gpg --with-colon --list-secret-keys |awk -F: '/^sec/{print $5}')
-export KEYID=${KEYID-03C3951A}
+export KEYID=${KEYID:-03C3951A}
 
 ./autobuilder.sh
 

@@ -3,7 +3,7 @@ set -e
 
 DISTS=`cat ../../dists`
 NAME=`cat ../../pkgname`
-KEYID=${KEYID-03C3951A}
+KEYID=${KEYID:-03C3951A}
 pbuilddir="/srv/debian-base"
 
 # Actually build the project

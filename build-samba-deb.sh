@@ -4,7 +4,7 @@ set -e
 
 bindir=`dirname $0`
 
-keyid=${KEYID-03C3951A}
+keyid=${KEYID:-03C3951A}
 
 numproc=`cat /proc/cpuinfo |grep -c processor`
 [ -z "$numproc" ] && numproc=1

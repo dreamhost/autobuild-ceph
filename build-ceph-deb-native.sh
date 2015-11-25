@@ -73,7 +73,7 @@ printf '%s\n' "$VER" >"$OUTDIR_TMP/version"
 printf '%s\n' "ceph" >"$OUTDIR_TMP/name"
 
 mkdir -p $OUTDIR_TMP/conf
-/srv/ceph-build/gen_reprepro_conf.sh $OUTDIR_TMP ${KEYID-03C3951A}
+/srv/ceph-build/gen_reprepro_conf.sh $OUTDIR_TMP ${KEYID:-03C3951A}
 
 for f in out~/*.changes
 do
