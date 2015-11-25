@@ -4,7 +4,7 @@ set -e
 
 bindir=`dirname $0`
 
-keyid="03C3951A"
+keyid=${KEYID-03C3951A}
 
 numproc=`cat /proc/cpuinfo |grep -c processor`
 [ -z "$numproc" ] && numproc=1
@@ -72,7 +72,7 @@ printf '%s\n' "$SMBVERS" >"$OUTDIR_TMP/version"
 printf '%s\n' "samba" >"$OUTDIR_TMP/name"
 
 mkdir -p $OUTDIR_TMP/conf
-/srv/ceph-build/gen_reprepro_conf.sh $OUTDIR_TMP 03C3951A
+/srv/ceph-build/gen_reprepro_conf.sh $OUTDIR_TMP $KEYID
 
 GNUPGHOME="/srv/gnupg" reprepro --ask-passphrase -b $OUTDIR_TMP -C main --ignore=undefinedtarget --ignore=wrongdistribution includedeb ${DIST} samba_${SMBVERS}_*.deb
 

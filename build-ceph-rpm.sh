@@ -40,7 +40,7 @@ echo "Building branch=$BRANCH, sha1=$REV, version=$VER"
 
 # set up key for signing RPMs
 export GNUPGHOME=/srv/gnupg
-KEYID=03C3951A
+KEYID=${KEYID-03C3951A}
 if ! gpg --list-keys 2>&1 | grep $KEYID  > /dev/null
 then
     echo "Can not find RPM signing key" 1>&2

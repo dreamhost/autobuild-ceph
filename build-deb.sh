@@ -3,7 +3,7 @@ set -e
 
 DISTS=`cat ../../dists`
 NAME=`cat ../../pkgname`
-KEYID="03C3951A"
+KEYID=${KEYID-03C3951A}
 pbuilddir="/srv/debian-base"
 
 # Actually build the project
@@ -59,7 +59,7 @@ printf '%s\n' "$VER" >"$OUTDIR_TMP/version"
 printf '%s\n' "$NAME" >"$OUTDIR_TMP/name"
 
 mkdir -p $OUTDIR_TMP/conf
-/srv/ceph-build/gen_reprepro_conf.sh $OUTDIR_TMP 03C3951A
+/srv/ceph-build/gen_reprepro_conf.sh $OUTDIR_TMP $KEYID
 
 for dist in $DISTS
 do

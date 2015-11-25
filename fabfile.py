@@ -251,6 +251,7 @@ def _rh_gitbuilder(flavor, git_repo, extra_remotes={}, extra_packages=[], ignore
                             sudo("mv /home/ubuntu/*.gpg ./")
                             sudo('chown autobuild-ceph:autobuild-ceph pubring.gpg secring.gpg trustdb.gpg')
                             sudo('chmod 600 pubring.gpg secring.gpg trustdb.gpg')
+                            sudo('echo 03C3951A >keyid')
         with cd('/srv/autobuild-ceph'):
             if ignore:
                 sudo('install -d -m0755 --owner=autobuild-ceph --group=autobuild-ceph gitbuilder.git/out/ignore')
@@ -392,6 +393,7 @@ def _deb_install_extras():
                 sudo("mv /home/ubuntu/*.gpg ./")
                 sudo('chown autobuild-ceph:autobuild-ceph pubring.gpg secring.gpg')
                 sudo('chmod 600 pubring.gpg secring.gpg')
+                sudo('echo 03C3951A >keyid')
         if not exists('ceph-build'):
             sudo('git clone https://github.com/ceph/ceph-build.git')
         with cd('ceph-build'):
