@@ -396,6 +396,7 @@ def _deb_install_extras(ceph_build_uri='https://github.com/ceph/ceph-build.git',
             sudo('git clone -b {branch} {uri}'.format(uri=ceph_build_uri, branch=ceph_build_branch))
         with cd('ceph-build'):
             sudo('git remote set-url origin {uri}'.format(uri=ceph_build_uri))
+            sudo('git remote update')
             sudo('git checkout origin/{branch}'.format(branch=ceph_build_branch))
             sudo('git pull')
         sudo('grep -q autobuild-ceph /etc/sudoers || echo "autobuild-ceph ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers')
