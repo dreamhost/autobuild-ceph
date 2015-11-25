@@ -72,7 +72,7 @@ find "$SHA_OUTDIR" -mindepth 1 -maxdepth 1 -name '*.tmp' -print0 \
 
 # rsync --delete on the refs, so that stale refs on the target are
 # removed.  remove remote sha1 dirs that are stale.
-if [ -n "$target" ]; then
+if [ -n "$target" -a -f ../rsync-key :]; then
     echo "removing old refs"
     rsync -auv --delete -e "ssh -i ../rsync-key -o StrictHostKeyChecking=no" \
 	"$REF_OUTDIR/" $target/ref
