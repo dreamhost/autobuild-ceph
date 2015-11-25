@@ -376,7 +376,7 @@ def _gitbuilder(flavor, git_repo, extra_remotes={}, extra_packages=[], ignore=[]
     sudo('chown -R autobuild-ceph:autobuild-ceph /srv/autobuild-ceph')
     install_git()
 
-def _deb_install_extras():
+def _deb_install_extras(ceph_build_uri='https://github.com/ceph/ceph-build.git', ceph_build_branch='master'):
     with cd('/srv'):
         if not exists('gnupg'):
             sudo('mkdir gnupg')
@@ -393,8 +393,9 @@ def _deb_install_extras():
                 sudo('chown autobuild-ceph:autobuild-ceph pubring.gpg secring.gpg')
                 sudo('chmod 600 pubring.gpg secring.gpg')
         if not exists('ceph-build'):
-            sudo('git clone https://github.com/ceph/ceph-build.git')
+            sudo('git clone -b {branch} {uri}'.format(uri=ceph_build_uri, branch=ceph_build_branch))
         with cd('ceph-build'):
+            sudo('git checkout origin/{branch}'.format(branch=ceph_build_branch))
             sudo('git pull')
         sudo('grep -q autobuild-ceph /etc/sudoers || echo "autobuild-ceph ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers')
 
@@ -645,7 +646,7 @@ def _gitbuilder_ceph(flavor, git_repo='https://github.com/ceph/ceph.git'):
         )
     sudo('start autobuild-ceph || /etc/init.d/autobuild-ceph start ; systemctl enable autobuild-ceph || true ; systemctl start autobuild-ceph || true')
 
-def _deb_builder(git_repo, flavor, extra_remotes={}, branches_local_name='branches-local', branch_to_bundle='master'):
+def _deb_builder(git_repo, flavor, extra_remotes={}, branches_local_name='branches-local', branch_to_bundle='master', ceph_build_uri='https://github.com/ceph/ceph-build.git', ceph_build_branch='master'):
     _gitbuilder(
         flavor=flavor,
         git_repo=git_repo,
@@ -704,7 +705,10 @@ def _deb_builder(git_repo, flavor, extra_remotes={}, branches_local_name='branch
         branches_local_name=branches_local_name,
         branch_to_bundle=branch_to_bundle,
         )
-    _deb_install_extras()
+    _deb_install_extras(
+            ceph_build_uri=ceph_build_uri,
+            ceph_build_branch=ceph_build_branch,
+            )
 
 @roles('gitbuilder_auto')
 def gitbuilder_auto():
